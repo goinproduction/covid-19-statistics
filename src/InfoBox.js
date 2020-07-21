@@ -8,13 +8,12 @@ function InfoBox({title, cases, total}) {
                 <Typography color="textSecondary" className="infoBox__title">
                     {title}
                 </Typography>
- 
+                 {/* So luong ca nhiem  */}
                 <h2 className="infoBox__cases">{cases}</h2>
-                {/* So luong ca nhiem  */}
 
                 {/* Tong so luong ca nhiem */}
                 <Typography className="infoBox__total">
-                    {total} Total
+                    Total: {total}
                 </Typography>
             </CardContent>
         </Card>
