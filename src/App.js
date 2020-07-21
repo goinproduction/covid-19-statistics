@@ -5,6 +5,7 @@ import InfoBox from './InfoBox';
 import Map from './Map';
 import Table from './Table';
 import {sortData} from './util';
+import LineGraph from './LineGraph';
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide");
@@ -93,6 +94,7 @@ function App() {
           <Table countries={tabledata} />
           <h3>Tổng số ca mới</h3>
           {/* Graph */}
+          <LineGraph />
         </CardContent>
       </Card>
     </div>
