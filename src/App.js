@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { MenuItem, FormControl, Select, Card, CardContent } from "@material-ui/core";
+import { MenuItem, FormControl, Select, Card, CardContent} from "@material-ui/core";
 import InfoBox from './InfoBox';
 import Map from './Map';
+import Table from './Table';
+import {sortData} from './util';
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] = useState({});
-
+  const [tabledata, setTableData] = useState([]);
 
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/all')
@@ -29,6 +31,8 @@ function App() {
           }
           ));
 
+          const sortedData = sortData(data);
+          setTableData(sortedData);
           setCountries(countries)
         })
     }
@@ -40,17 +44,17 @@ function App() {
     setCountry(countryCode);
 
     const url = countryCode === 'worldwide' ? 'https://disease.sh/v3/covid-19/all' : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
-    
+
     await fetch(url)
       .then(response => response.json())
       .then(data => {
 
         setCountry(countryCode);
-          // Lấy toàn bộ data của quốc gia đó
-        setCountryInfo(data); 
-      })  
+        // Lấy toàn bộ data của quốc gia đó
+        setCountryInfo(data);
+      })
   }
-// debug: console.log(countryInfo);
+  // debug: console.log(countryInfo);
   return (
     <div className="app">
       <div className="app__left">
@@ -76,21 +80,21 @@ function App() {
           {/* InfoBoxes - Deaths*/}
           <InfoBox title="Tử vong" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
         </div>
-        
+
         {/* Maps */}
         <div className="app__map">
           <Map />
         </div>
       </div>
-    <Card className="app__right">
-      <CardContent>
-        <h3>Số ca nhiễm theo quốc gia</h3>
-        {/* Table */}
-
-        <h3>Tổng số ca mới</h3>
-        {/* Graph */}
-      </CardContent>
-    </Card>
+      <Card className="app__right">
+        <CardContent>
+          <h3>Số ca nhiễm theo quốc gia</h3>
+          {/* Table */}
+          <Table countries={tabledata} />
+          <h3>Tổng số ca mới</h3>
+          {/* Graph */}
+        </CardContent>
+      </Card>
     </div>
   );
 }
