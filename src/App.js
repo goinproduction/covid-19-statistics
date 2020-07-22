@@ -41,8 +41,8 @@ function App() {
           setTableData(sortedData);
           setMapCountries(data);
           setCountries(countries);
-        })
-    }
+        });
+    };
     getCountriesData();
   }, []);
 
@@ -62,7 +62,7 @@ function App() {
 
         // Maps
         setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
-        setMapZoom(3);
+        setMapZoom(4);
       })
   }
   // debug: console.log(countryInfo);
