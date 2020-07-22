@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { MenuItem, FormControl, Select, Card, CardContent} from "@material-ui/core";
+import { MenuItem, FormControl, Select, Card, CardContent } from "@material-ui/core";
 import InfoBox from './InfoBox';
 import Map from './Map';
 import Table from './Table';
-import {sortData} from './util';
+import { sortData, formatStat } from './util';
 import LineGraph from './LineGraph';
 import "leaflet/dist/leaflet.css";
 
@@ -14,9 +14,11 @@ function App() {
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] = useState({});
   const [tabledata, setTableData] = useState([]);
-  const [mapCenter, setMapCenter] = useState({lat: 34.80746, lng: -40.4796});
+  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
   const [mapZoom, setMapZoom] = useState(3);
   const [mapCountries, setMapCountries] = useState([]);
+  const [casesType, setCasesType] = useState('cases');
+  const [stateName, setStateName] = useState('nhiễm');
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/all')
       .then(response => response.json())
@@ -71,7 +73,7 @@ function App() {
       <div className="app__left">
         {/* Header  */}
         <div className="app__header">
-          <h1>COVID-19 TRACKER</h1>
+          <h1 className="text-primary">COVID-19</h1>
           <FormControl className="app__dropdown">
             <Select variant="outlined" value={country} onChange={onCountryChange}>
               <MenuItem value="worldwide">Toàn cầu
@@ -84,20 +86,44 @@ function App() {
         </div>
 
         <div className="app__stats">
-          {/* InfoBoxes - Cases */}
-          <InfoBox title="Số lượng ca nhiễm" cases={countryInfo.todayCases} total={countryInfo.cases} />
-          {/* InfoBoxes - Recovery */}
-          <InfoBox title="Hồi phục" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
-          {/* InfoBoxes - Deaths*/}
-          <InfoBox title="Tử vong" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
+          <InfoBox 
+            isRed
+            active = {casesType === 'cases'} 
+            onClick = {() =>{ 
+              setCasesType('cases');
+              setStateName('nhiễm');
+            }}
+            title="Số lượng ca nhiễm" 
+            cases={formatStat(countryInfo.todayCases)} 
+            total={formatStat(countryInfo.cases)} />
+          <InfoBox 
+            active = {casesType === 'recovered'} 
+            onClick = {() => {
+              setCasesType('recovered');
+              setStateName('hồi phục');
+            }}
+            title="Hồi phục"
+            cases={formatStat(countryInfo.todayRecovered)} 
+            total={formatStat(countryInfo.recovered)} />
+          <InfoBox 
+            isRed
+            active = {casesType === 'deaths'}
+            onClick = {() => {
+              setCasesType('deaths');
+              setStateName('tử vong');
+            }}
+            title="Tử vong" 
+            cases={formatStat(countryInfo.todayDeaths)} 
+            total={formatStat(countryInfo.deaths)} />
         </div>
 
         {/* Maps */}
         <div className="app__map">
-          <Map 
-            countries = {mapCountries}
-            center = {mapCenter}
-            zoom = {mapZoom}
+          <Map
+            casesType = {casesType}
+            countries={mapCountries}
+            center={mapCenter}
+            zoom={mapZoom}
           />
         </div>
       </div>
@@ -106,9 +132,9 @@ function App() {
           <h3>Số ca nhiễm theo quốc gia</h3>
           {/* Table */}
           <Table countries={tabledata} />
-          <h3>Tổng số ca mới</h3>
+              <h3>Tổng số ca {stateName} mới</h3>
           {/* Graph */}
-          <LineGraph />
+          <LineGraph className="app__graph" casesType = {casesType}/>
         </CardContent>
       </Card>
     </div>

@@ -7,7 +7,7 @@ const casesTypeColors = {
         multiplier: 800,
     },
     recovered: {
-        hex: "#7dd71d",
+        hex: "#4CAF50",
         multiplier: 1200,
     },
     deaths: {
@@ -47,3 +47,6 @@ export const showDataOnMap = (data, casesType = "cases") => (
         </Circle>
     ))
 );
+
+// Format lại số liệu cho dễ nhìn
+export const formatStat = (stat) => stat ? `+ ${numeral(stat).format("0,0")}` : "+0";
