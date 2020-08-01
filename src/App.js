@@ -93,7 +93,7 @@ function App() {
               setCasesType('cases');
               setStateName('nhiễm');
             }}
-            title="Số lượng ca nhiễm" 
+            title="Ca nhiễm" 
             cases={formatStat(countryInfo.todayCases)} 
             total={formatStat(countryInfo.cases)} />
           <InfoBox 

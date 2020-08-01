@@ -16,7 +16,7 @@ function InfoBox({title, cases, active, isRed, total, ...props}) {
 
                 {/* Tong so luong ca nhiem */}
                 <Typography className="infoBox__total" color="textSecondary">
-                    Tổng ca nhiễm: {total}
+                    Tổng số ca: {total}
                 </Typography>
             </CardContent>
         </Card>
