@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Line } from "react-chartjs-2";
-import numeral from "numeral";
+import React, { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
+import numeral from 'numeral';
 const options = {
     legend: {
         display: false,
@@ -12,21 +12,21 @@ const options = {
     },
     maintainAspectRatio: false,
     tooltips: {
-        mode: "index",
+        mode: 'index',
         intersect: false,
         callbacks: {
             label: function (tooltipItem, data) {
-                return numeral(tooltipItem.value).format("+0,0");
+                return numeral(tooltipItem.value).format('+0,0');
             },
         },
     },
     scales: {
         xAxes: [
             {
-                type: "time",
+                type: 'time',
                 time: {
-                    format: "MM/DD/YY",
-                    tooltipFormat: "ll",
+                    format: 'MM/DD/YY',
+                    tooltipFormat: 'll',
                 },
             },
         ],
@@ -37,13 +37,14 @@ const options = {
                 },
                 ticks: {
                     callback: function (value, index, values) {
-                        return numeral(value).format("0a");
+                        return numeral(value).format('0a');
                     },
                 },
             },
         ],
     },
-}
+};
+
 const buildChartData = (data, casesType) => {
     let chartData = [];
     let lastDataPoint;
@@ -52,48 +53,53 @@ const buildChartData = (data, casesType) => {
         if (lastDataPoint) {
             let newDataPoint = {
                 x: date,
-                y: data[casesType][date] - lastDataPoint
+                y: data[casesType][date] - lastDataPoint,
             };
             chartData.push(newDataPoint);
         }
         lastDataPoint = data[casesType][date];
     }
+    console.log(casesType);
     return chartData;
-}
-function LineGraph({casesType = "cases", ...props}) {
+};
 
-    const [data, setData] = useState({});
+function LineGraph({ casesType, ...props }) {
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=120')
-                .then(response => {
+            await fetch(
+                'https://disease.sh/v3/covid-19/historical/all?lastdays=120'
+            )
+                .then((response) => {
                     return response.json();
                 })
                 .then((data) => {
                     let chartData = buildChartData(data, casesType);
                     setData(chartData);
+                    console.log(casesType);
                 });
         };
         fetchData();
-    }, []);
+    }, [casesType]);
     return (
         <div className={props.className}>
             {data?.length > 0 && (
                 <Line
                     options={options}
                     data={{
-                        datasets: [{
-                            data: data,
-                            backgroundColor: "rgba(204, 16, 52, 0.5)",
-                            borderColor: "#CC1034"
-                        }
-                        ]
+                        datasets: [
+                            {
+                                data: data,
+                                backgroundColor: 'rgba(204, 16, 52, 0.5)',
+                                borderColor: '#CC1034',
+                            },
+                        ],
                     }}
                 />
             )}
         </div>
-    )
+    );
 }
 
-export default LineGraph
+export default LineGraph;

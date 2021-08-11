@@ -1,33 +1,33 @@
-.infoBox{
+.infoBox {
     flex: 1;
     cursor: pointer;
 }
 
-.infoBox:not(:last-child){
+.infoBox:not(:last-child) {
     margin-right: 15px;
 }
 
-.infoBox__cases{
+.infoBox__cases {
     color: #cc1034;
     font-size: 1.75rem;
     margin-bottom: 0.5rem;
 }
 
-.infoBox__total{
+.infoBox__total {
     color: #6c757d;
     font-weight: 700 !important;
     font-size: 1rem !important;
     margin-top: 15px !important;
 }
 
-.infoBox--selected{
-    border-top: 10px solid #4CAF50;
+.infoBox--selected {
+    border-top: 10px solid #4caf50;
 }
 
-.infoBox--red{
+.infoBox--red {
     border-color: red;
 }
 
-.infoBox__cases--green{
-    color: #4CAF50 !important;
+.infoBox__cases--green {
+    color: #4caf50 !important;
 }
