@@ -1,5 +1,5 @@
 <h1>List of features</h1>
-<ul style="list-style-type:circle>
+<ul style="list-style-type:circle">
     <li>Show cases/recovered/deaths/ by country</li>
     <li>Data visualization</li>
      <li>Sort cases<li>
